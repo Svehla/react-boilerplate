@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "deploy:build": "aws s3 sync --delete --acl public-read build s3://boilerplate-hello-world-s3-web-dev",
+    "d:b": "npm run deploy:build",
+    "d": "npm run build && npm run deploy:build",
     "apollo": "apollo client:codegen --target typescript --localSchemaFile=schema.graphql",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
