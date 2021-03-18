@@ -1,0 +1,68 @@
+{
+    "typescript.tsdk": "node_modules/typescript/lib", "eslint.autoFixOnSave": true, "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        {
+            "language": "typescript",
+            "autoFix": true
+        },
+        {
+            "language": "typescriptreact",
+            "autoFix": true
+        }
+    ],
+    "editor.formatOnSave": true,
+    "[javascript]": {
+        "editor.formatOnSave": false
+    },
+    "[javascriptreact]": {
+        "editor.formatOnSave": false
+    },
+    "[typescript]": {
+        "editor.formatOnSave": false
+    },
+    "[typescriptreact]": {
+        "editor.formatOnSave": false
+    },
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "cSpell.words": [
+        "FIAF",
+        "Fupid",
+        "STMD",
+        "STOREMODEBFFGATEWAYSERVICE",
+        "STOREMODEWEBAPP",
+        "autodeploy",
+        "browserslist",
+        "camelcase",
+        "careplans",
+        "carphone",
+        "clsx",
+        "cpus",
+        "dixons",
+        "entrypoints",
+        "flexometer",
+        "gitlab",
+        "gomplate",
+        "healthcheck",
+        "loadbalancer",
+        "megamenu",
+        "middlewares",
+        "nemo",
+        "noproxy",
+        "olis",
+        "openid",
+        "passhostheader",
+        "preprod",
+        "printf",
+        "proptypes",
+        "reduck",
+        "sbre",
+        "setted",
+        "traefik",
+        "transpiling",
+        "urljoin",
+        "webhttps"
+    ]
+}

@@ -1,0 +1,152 @@
+schema {
+  query: RootQueryType
+  mutation: RootMutationType
+}
+
+"""
+Direct the client to resolve this field locally, either from the cache or local resolvers.
+"""
+directive @client(
+  """
+  When true, the client will never use the cache for this value. See
+  https://www.apollographql.com/docs/react/essentials/local-state/#forcing-resolvers-with-clientalways-true
+  """
+  always: Boolean
+) on FIELD | FRAGMENT_DEFINITION | INLINE_FRAGMENT
+
+"""
+Export this locally resolved field as a variable to be used in the remainder of this query. See
+https://www.apollographql.com/docs/react/essentials/local-state/#using-client-fields-as-variables
+"""
+directive @export(
+  """The variable name to export this field as."""
+  as: String!
+) on FIELD
+
+"""
+Specify a custom store key for this result. See
+https://www.apollographql.com/docs/react/advanced/caching/#the-connection-directive
+"""
+directive @connection(
+  """Specify the store key."""
+  key: String!
+
+  """
+  An array of query argument names to include in the generated custom store key.
+  """
+  filter: [String!]
+) on FIELD
+
+type RootQueryType {
+  users(pagination: usersQuery_pagination!): connection_users
+  appVersion: String
+}
+
+type connection_users {
+  count: Int
+  items: [User!]
+}
+
+type User {
+  id: ID!
+  firstName: String
+  email: String
+  age: Int
+  profileImgUrl: String
+  role: UserRoleEnum
+  isEmailVerified: Boolean
+  posts(pagination: user_posts_args_pagination!): connection_user_posts
+}
+
+enum UserRoleEnum {
+  Admin
+  Editor
+}
+
+type connection_user_posts {
+  count: Int
+  items: [Post!]
+}
+
+type Post {
+  id: ID!
+  rawId: ID
+  name: String
+  text: String
+  authorId: ID
+  author: User
+  comments(pagination: post_comments_pagination!): connection_post_comments
+}
+
+type connection_post_comments {
+  count: Int
+  items: [Comment]
+}
+
+type Comment {
+  id: ID!
+  rawId: ID
+  text: String
+  createdAt: String
+  updatedAt: String
+}
+
+input post_comments_pagination {
+  offset: Int!
+  limit: Int!
+}
+
+input user_posts_args_pagination {
+  offset: Int!
+  limit: Int!
+}
+
+input usersQuery_pagination {
+  offset: Int!
+  limit: Int!
+}
+
+type RootMutationType {
+  userLogin(input: user_login_mutation_input!): user_login_output
+  userRegistrationMutation(input: user_registration_mutation_input!): user_registration_output
+  verifyUserEmailMutation(input: Verify_user_input_mutation!): verify_user_email_output
+}
+
+type user_login_output {
+  user: User
+  token: String
+}
+
+input user_login_mutation_input {
+  email: Email!
+  password: Password!
+}
+
+"""
+The Email scalar type represents E-Mail addresses compliant to RFC 822.
+"""
+scalar Email
+
+"""A password string. Has to be between 6 and 50 characters long."""
+scalar Password
+
+type user_registration_output {
+  user: User
+  token: String
+}
+
+input user_registration_mutation_input {
+  email: Email!
+  password: Password2!
+}
+
+"""A password string. Has to be between 3 and 20 characters long."""
+scalar Password2
+
+type verify_user_email_output {
+  isTokenVerified: Boolean
+}
+
+input Verify_user_input_mutation {
+  verifyToken: String!
+}
