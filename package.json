@@ -1,5 +1,5 @@
 {
-  "name": "react_boilerplate",
+  "name": "my-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -15,14 +15,6 @@
     "ts:check-types": "tsc",
     "ts:check-types:watch": "tsc --watch"
   },
-  "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --write"
-    ],
-    "tests/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --write"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -30,50 +22,44 @@
       "not op_mini all"
     ],
     "development": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
     ]
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "dependencies": {
-    "@apollo/client": "^3.2.2",
+    "@apollo/client": "^3.3.12",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.0.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
     "apollo": "^2.32.5",
-    "graphql": "^15.3.0",
+    "graphql": "^15.5.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-helmet-async": "^1.0.9",
-    "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "^4.0.3",
+    "react-scripts": "4.0.3",
     "typed-env-parser": "0.0.8",
-    "typescript": "^4.2.3"
+    "typescript": "^4.2.3",
+    "web-vitals": "^1.0.1"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "@types/jest": "^26.0.14",
-    "@types/node": "^14.11.2",
-    "@types/react": "^16.9.49",
-    "@types/react-dom": "^16.9.8",
-    "@types/react-router-dom": "^5.1.5",
-    "@typescript-eslint/eslint-plugin": "^3.10.1",
-    "@typescript-eslint/parser": "^3.10.1",
     "eslint": "^7.22.0",
-    "eslint-config-prettier": "^6.12.0",
-    "eslint-config-react-app": "^5.2.1",
-    "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-sort-imports-es6-autofix": "^0.5.0",
-    "prettier": "^2.1.2",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-config-react-app": "^6.0.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
+    "prettier": "^2.2.1",
     "ts-node": "^9.0.0",
     "ts-node-dev": "^1.0.0-pre.63"
-  },
-  "babelMacros": {
-    "styledComponents": {
-      "pure": true
-    }
   }
 }

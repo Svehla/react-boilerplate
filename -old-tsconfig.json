@@ -8,24 +8,17 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "experimentalDecorators": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "esModuleInterop": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "strictNullChecks": true,
-    "noImplicitAny": true,
-    "noUnusedParameters": false,
-    "noUnusedLocals": false,
-    "noFallthroughCasesInSwitch": true
+    "jsx": "react-jsx"
   },
   "include": [
     "src"
