@@ -7,6 +7,10 @@ import {
 export const appEnvs = validateConfig({
   BE_URL: getStringFromEnvParser('REACT_APP_BE_URL', { pattern: 'https?://*.' }),
   NODE_ENV: getStringEnumFromEnvParser('NODE_ENV', ['test', 'production', 'development'] as const),
+  ENVIRONMENT: getStringEnumFromEnvParser('REACT_APP_ENVIRONMENT', [
+    'production',
+    'stage',
+  ] as const),
   APP_VERSION: getStringFromEnvParser('REACT_APP_VERSION'),
 })
 

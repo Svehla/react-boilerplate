@@ -1,9 +1,11 @@
 import { ApolloClient, ApolloProvider, createHttpLink } from '@apollo/client'
-import { GlobalDataContextProvider } from './GlobalDataContext'
+import { AppRoutes } from './AppRoutes'
+import { AppTheme } from './themes/AppTheme'
 import { HelmetProvider } from 'react-helmet-async'
-import { Root } from './Root'
-import { appConfig, appEnvs } from './appConfig'
+import { UserDetailContextProvider } from './globalState/UserDetail'
+import { appConfig } from './appConfig'
 import { cache } from './cache'
+import CssBaseline from '@material-ui/core/CssBaseline'
 import React from 'react'
 
 const link = createHttpLink({
@@ -18,14 +20,16 @@ const client = new ApolloClient({
 
 const App = () => {
   return (
-    <GlobalDataContextProvider>
-      <ApolloProvider client={client}>
-        <HelmetProvider>
-          <h1>Daily faily admin</h1>
-          <Root />
-        </HelmetProvider>
-      </ApolloProvider>
-    </GlobalDataContextProvider>
+    <HelmetProvider>
+      <AppTheme>
+        <ApolloProvider client={client}>
+          <UserDetailContextProvider>
+            <CssBaseline />
+            <AppRoutes />
+          </UserDetailContextProvider>
+        </ApolloProvider>
+      </AppTheme>
+    </HelmetProvider>
   )
 }
 
