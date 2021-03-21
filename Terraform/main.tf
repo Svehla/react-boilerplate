@@ -8,17 +8,18 @@ terraform {
     acl            = "bucket-owner-full-control"
   }
 
-  # verify terraform version
-  required_version = "v0.14.7"
+  required_version = "v0.14.8"
 }
 
 provider "aws" {
-  region = var.region
+  profile = "default"
+  region  = var.region
 }
 
 provider "aws" {
-  region = "us-east-1"
-  alias  = "us_east_1"
+  profile = "default"
+  region  = "us-east-1"
+  alias   = "us_east_1"
 }
 
 locals {
