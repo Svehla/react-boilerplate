@@ -9,7 +9,7 @@ terraform {
   }
 
   # verify terraform version
-  required_version = "v0.14.8"
+  required_version = "v0.14.7"
 }
 
 provider "aws" {

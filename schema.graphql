@@ -39,6 +39,8 @@ directive @connection(
 
 type RootQueryType {
   users(pagination: usersQuery_pagination!): connection_users
+  publicUserViewer: PublicUser
+  isPublicUserLoggedIn: Boolean
   appVersion: String
 }
 
@@ -106,10 +108,22 @@ input usersQuery_pagination {
   limit: Int!
 }
 
+type PublicUser {
+  id: ID!
+  email: String
+  loginType: PublicUserLoginTypeEnum
+  profileImg: String
+}
+
+enum PublicUserLoginTypeEnum {
+  Google
+}
+
 type RootMutationType {
   userLogin(input: user_login_mutation_input!): user_login_output
   userRegistrationMutation(input: user_registration_mutation_input!): user_registration_output
   verifyUserEmailMutation(input: Verify_user_input_mutation!): verify_user_email_output
+  publicUserLogoutMutation: String
 }
 
 type user_login_output {

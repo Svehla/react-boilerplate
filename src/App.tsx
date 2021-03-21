@@ -1,23 +1,31 @@
-import { ApolloClient, ApolloProvider } from '@apollo/client'
+import { ApolloClient, ApolloProvider, createHttpLink } from '@apollo/client'
+import { GlobalDataContextProvider } from './GlobalDataContext'
 import { HelmetProvider } from 'react-helmet-async'
 import { Root } from './Root'
-import { appConfig } from './appConfig'
+import { appConfig, appEnvs } from './appConfig'
 import { cache } from './cache'
 import React from 'react'
 
+const link = createHttpLink({
+  uri: appConfig.graphqlUrl,
+  credentials: 'include',
+})
+
 const client = new ApolloClient({
   cache,
-  uri: appConfig.graphqlUrl,
+  link,
 })
 
 const App = () => {
   return (
-    <ApolloProvider client={client}>
-      <HelmetProvider>
-        <h1>hxxxxxi</h1>
-        <Root />
-      </HelmetProvider>
-    </ApolloProvider>
+    <GlobalDataContextProvider>
+      <ApolloProvider client={client}>
+        <HelmetProvider>
+          <h1>Daily faily admin</h1>
+          <Root />
+        </HelmetProvider>
+      </ApolloProvider>
+    </GlobalDataContextProvider>
   )
 }
 
