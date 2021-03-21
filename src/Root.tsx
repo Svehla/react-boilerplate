@@ -2,6 +2,7 @@ import { GlobalDataContext } from './GlobalDataContext'
 import { Helmet } from 'react-helmet-async'
 import { Logout as LogoutTypeMutation } from './__generated__/Logout'
 import { RootQuery } from './__generated__/RootQuery'
+import { RootRouter } from './RootRouter'
 import { appConfig, appEnvs } from './appConfig'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import React, { useContext } from 'react'
@@ -67,6 +68,8 @@ export const Root = () => {
         <div>email: {data?.publicUserViewer?.email}</div>
         <img src={data?.publicUserViewer?.profileImg ?? ''} />
       </div>
+
+      <RootRouter />
     </div>
   )
 }
