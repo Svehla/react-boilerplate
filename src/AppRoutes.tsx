@@ -3,6 +3,8 @@ import { Helmet } from 'react-helmet-async'
 import { Home } from './pages/Home'
 import { Layout } from './components/Layout'
 import { PageLoader } from './components/PageLoader'
+import { Post } from './pages/Post'
+import { Posts } from './pages/Posts'
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
 import { UserDetail } from './pages/UserDetail'
 import { UserDetailContext } from './globalState/UserDetail'
@@ -36,7 +38,10 @@ export const AppRoutes = () => {
         <Layout>
           <Switch>
             <Route exact path='/'>
-              <Home />
+              <Posts />
+            </Route>
+            <Route exact path={`/posts/:postId`}>
+              <Post />
             </Route>
             <Route exact path='/profile'>
               <UserDetail />

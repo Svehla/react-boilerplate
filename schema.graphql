@@ -38,13 +38,15 @@ directive @connection(
 ) on FIELD
 
 type RootQueryType {
-  users(pagination: usersQuery_pagination!): connection_users
+  users(pagination: query_users_args_pagination!): connection_query_users_list
   publicUserViewer: PublicUser
   isPublicUserLoggedIn: Boolean
+  post(id: ID!): Post
+  posts(pagination: query_posts_args_pagination!): connection_query_posts_list
   appVersion: String
 }
 
-type connection_users {
+type connection_query_users_list {
   count: Int
   items: [User!]
 }
@@ -57,7 +59,7 @@ type User {
   profileImgUrl: String
   role: UserRoleEnum
   isEmailVerified: Boolean
-  posts(pagination: user_posts_args_pagination!): connection_user_posts
+  posts(pagination: user_posts_args_args_pagination!): connection_user_posts_list
 }
 
 enum UserRoleEnum {
@@ -65,47 +67,19 @@ enum UserRoleEnum {
   Editor
 }
 
-type connection_user_posts {
+type connection_user_posts_list {
   count: Int
   items: [Post!]
 }
 
 type Post {
   id: ID!
-  rawId: ID
   name: String
   text: String
   authorId: ID
-  author: User
-  comments(pagination: post_comments_pagination!): connection_post_comments
-}
-
-type connection_post_comments {
-  count: Int
-  items: [Comment]
-}
-
-type Comment {
-  id: ID!
-  rawId: ID
-  text: String
-  createdAt: String
-  updatedAt: String
-}
-
-input post_comments_pagination {
-  offset: Int!
-  limit: Int!
-}
-
-input user_posts_args_pagination {
-  offset: Int!
-  limit: Int!
-}
-
-input usersQuery_pagination {
-  offset: Int!
-  limit: Int!
+  author: PublicUser
+  comments(pagination: post_comments_args_pagination!): connection_post_comments_list
+  reactions(pagination: post_reactions_args_pagination!): connection_post_reactions_list
 }
 
 type PublicUser {
@@ -113,17 +87,105 @@ type PublicUser {
   email: String
   loginType: PublicUserLoginTypeEnum
   profileImg: String
+  posts(pagination: PublicUser_posts_args_pagination!): connection_PublicUser_posts_list
+  reactions(pagination: PublicUser_reactions_args_pagination!): connection_PublicUser_reactions_list
 }
 
 enum PublicUserLoginTypeEnum {
   Google
 }
 
+type connection_PublicUser_posts_list {
+  count: Int
+  items: [Post]
+}
+
+input PublicUser_posts_args_pagination {
+  offset: Int!
+  limit: Int!
+}
+
+type connection_PublicUser_reactions_list {
+  count: Int
+  items: [PostReaction!]
+}
+
+type PostReaction {
+  id: ID!
+  reactionType: ReactionTypeEnum
+  publicUserId: String
+  author: PublicUser
+}
+
+enum ReactionTypeEnum {
+  Reaction1
+  Reaction2
+  Reaction3
+  Reaction4
+}
+
+input PublicUser_reactions_args_pagination {
+  offset: Int!
+  limit: Int!
+}
+
+type connection_post_comments_list {
+  count: Int
+  items: [Comment]
+}
+
+type Comment {
+  id: ID!
+  text: String
+  authorId: ID
+  createdAt: String
+  updatedAt: String
+  author: PublicUser
+}
+
+input post_comments_args_pagination {
+  offset: Int!
+  limit: Int!
+}
+
+type connection_post_reactions_list {
+  count: Int
+  items: [PostReaction!]
+}
+
+input post_reactions_args_pagination {
+  offset: Int!
+  limit: Int!
+}
+
+input user_posts_args_args_pagination {
+  offset: Int!
+  limit: Int!
+}
+
+input query_users_args_pagination {
+  offset: Int!
+  limit: Int!
+}
+
+type connection_query_posts_list {
+  count: Int
+  items: [Post!]
+}
+
+input query_posts_args_pagination {
+  offset: Int!
+  limit: Int!
+}
+
 type RootMutationType {
-  userLogin(input: user_login_mutation_input!): user_login_output
-  userRegistrationMutation(input: user_registration_mutation_input!): user_registration_output
-  verifyUserEmailMutation(input: Verify_user_input_mutation!): verify_user_email_output
+  userLogin(input: user_login_mutation_input_input_arg!): user_login_output
+  userRegistrationMutation(input: user_registration_mutation_input_input_arg!): user_registration_output
+  verifyUserEmailMutation(input: Verify_user_input_mutation_input_arg!): verify_user_email_output
   publicUserLogoutMutation: String
+  addPostMutation(input: addPostMutation_args_input_arg!): addPostMutation_type
+  addCommentMutation(input: addCommentMutation_args_input_arg!): addCommentMutation_type
+  addPostReactionMutation(input: addPostReactionMutation_args_input_arg!): addPostReactionMutation_type
 }
 
 type user_login_output {
@@ -131,7 +193,7 @@ type user_login_output {
   token: String
 }
 
-input user_login_mutation_input {
+input user_login_mutation_input_input_arg {
   email: Email!
   password: Password!
 }
@@ -149,7 +211,7 @@ type user_registration_output {
   token: String
 }
 
-input user_registration_mutation_input {
+input user_registration_mutation_input_input_arg {
   email: Email!
   password: Password2!
 }
@@ -161,6 +223,42 @@ type verify_user_email_output {
   isTokenVerified: Boolean
 }
 
-input Verify_user_input_mutation {
+input Verify_user_input_mutation_input_arg {
   verifyToken: String!
 }
+
+type addPostMutation_type {
+  post: Post
+}
+
+input addPostMutation_args_input_arg {
+  text: LimitedString
+}
+
+"""A limited string. Has to be between 10 and 10000 characters long."""
+scalar LimitedString
+
+type addCommentMutation_type {
+  comment: Comment
+}
+
+input addCommentMutation_args_input_arg {
+  text: LimitedString2
+  postId: Int!
+}
+
+"""A limited string. Has to be between 3 and 10000 characters long."""
+scalar LimitedString2
+
+type addPostReactionMutation_type {
+  postReaction: PostReaction
+}
+
+input addPostReactionMutation_args_input_arg {
+  text: LimitedString3
+  postId: Int!
+  reactionType: ReactionTypeEnum!
+}
+
+"""A limited string. Has to be between 3 and 10000 characters long."""
+scalar LimitedString3
