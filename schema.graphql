@@ -40,16 +40,16 @@ directive @connection(
 type RootQueryType {
   users(pagination: query_users_args_pagination!): connection_query_users_list
   publicUserViewer: PublicUser
-  publicUser(id: Int): PublicUser
+  publicUser(id: ID!): PublicUser
   isPublicUserLoggedIn: Boolean
-  post(id: Int!): Post
-  posts(pagination: query_posts_args_pagination!, authorId: Int): connection_query_posts_list
+  post(id: ID!): Post
+  posts(pagination: query_posts_args_pagination!, authorId: ID): connection_query_posts_list
   appVersion: String
 }
 
 type connection_query_users_list {
   count: Int
-  items: [User!]
+  items: [User]
 }
 
 type User {
@@ -70,7 +70,7 @@ enum UserRoleEnum {
 
 type connection_user_posts_list {
   count: Int
-  items: [Post!]
+  items: [Post]
 }
 
 type Post {
@@ -86,12 +86,13 @@ type Post {
 type PublicUser {
   id: ID!
   nickName: String
-  email: String
   loginType: PublicUserLoginTypeEnum
   profileImg: String
   posts(pagination: PublicUser_posts_args_pagination!): connection_PublicUser_posts_list
   reactions(pagination: PublicUser_reactions_args_pagination!): connection_PublicUser_reactions_list
   notifications(pagination: PublicUser_notification_args_args_pagination!): connection_PublicUser_notification_list
+  followers(pagination: PublicUser_followers_args_args_pagination!): connection_PublicUser_followers_list
+  following(pagination: PublicUser_following_args_args_pagination!): connection_PublicUser_following_list
 }
 
 enum PublicUserLoginTypeEnum {
@@ -110,7 +111,7 @@ input PublicUser_posts_args_pagination {
 
 type connection_PublicUser_reactions_list {
   count: Int
-  items: [PostReaction!]
+  items: [PostReaction]
 }
 
 type PostReaction {
@@ -134,7 +135,7 @@ input PublicUser_reactions_args_pagination {
 
 type connection_PublicUser_notification_list {
   count: Int
-  items: [Notification!]
+  items: [Notification]
 }
 
 type Notification {
@@ -147,6 +148,26 @@ type Notification {
 }
 
 input PublicUser_notification_args_args_pagination {
+  offset: Int!
+  limit: Int!
+}
+
+type connection_PublicUser_followers_list {
+  count: Int
+  items: [PublicUser]
+}
+
+input PublicUser_followers_args_args_pagination {
+  offset: Int!
+  limit: Int!
+}
+
+type connection_PublicUser_following_list {
+  count: Int
+  items: [PublicUser]
+}
+
+input PublicUser_following_args_args_pagination {
   offset: Int!
   limit: Int!
 }
@@ -172,7 +193,7 @@ input post_comments_args_pagination {
 
 type connection_post_reactions_list {
   count: Int
-  items: [PostReaction!]
+  items: [PostReaction]
 }
 
 input post_reactions_args_pagination {
@@ -192,7 +213,7 @@ input query_users_args_pagination {
 
 type connection_query_posts_list {
   count: Int
-  items: [Post!]
+  items: [Post]
 }
 
 input query_posts_args_pagination {
@@ -208,6 +229,8 @@ type RootMutationType {
   addPostMutation(input: addPostMutation_args_input_arg!): addPostMutation_type
   addCommentMutation(input: addCommentMutation_args_input_arg!): addCommentMutation_type
   addPostReactionMutation(input: addPostReactionMutation_args_input_arg!): addPostReactionMutation_type
+  addFollowPublicUser(input: addFollowPublicUser_input_input_arg!): addFollowPublicUser_type
+  deleteFollowPublicUser(input: deleteFollowPublicUser_input_input_arg!): deleteFollowPublicUser_type
 }
 
 type user_login_output {
@@ -266,7 +289,7 @@ type addCommentMutation_type {
 
 input addCommentMutation_args_input_arg {
   text: LimitedString2
-  postId: Int!
+  postId: ID!
 }
 
 """A limited string. Has to be between 3 and 10000 characters long."""
@@ -278,9 +301,25 @@ type addPostReactionMutation_type {
 
 input addPostReactionMutation_args_input_arg {
   text: LimitedString3
-  postId: Int!
+  postId: ID!
   reactionType: ReactionTypeEnum!
 }
 
 """A limited string. Has to be between 3 and 10000 characters long."""
 scalar LimitedString3
+
+type addFollowPublicUser_type {
+  startsFollow: Boolean
+}
+
+input addFollowPublicUser_input_input_arg {
+  followerId: ID!
+}
+
+type deleteFollowPublicUser_type {
+  stopsFollow: Boolean
+}
+
+input deleteFollowPublicUser_input_input_arg {
+  followerId: Int!
+}

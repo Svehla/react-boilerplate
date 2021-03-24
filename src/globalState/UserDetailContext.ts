@@ -1,7 +1,6 @@
 import { RootQuery } from './__generated__/RootQuery'
 import { genericHookContextBuilder } from '../utils/genericHookContextBuilder'
 import { gql, useQuery } from '@apollo/client'
-import { useState } from 'react'
 
 export const APP_VERSION = gql`
   query RootQuery {
@@ -11,7 +10,7 @@ export const APP_VERSION = gql`
 
     publicUserViewer {
       id
-      email
+      nickName
       profileImg
     }
   }

@@ -16,7 +16,7 @@ export enum ReactionTypeEnum {
 
 export interface addCommentMutation_args_input_arg {
   text?: any | null;
-  postId: number;
+  postId: string;
 }
 
 export interface addPostMutation_args_input_arg {

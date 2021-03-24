@@ -8,10 +8,10 @@ import React from 'react'
 const USER_DETAIL_QUERY = gql`
   ${POSTS_FEED_DATA_FRAGMENT}
 
-  query UserDetailQuery($userId: Int!, $feedPostsArgs: query_posts_args_pagination!) {
+  query UserDetailQuery($userId: ID!, $feedPostsArgs: query_posts_args_pagination!) {
     publicUser(id: $userId) {
       id
-      email
+      nickName
       profileImg
     }
 
@@ -30,7 +30,7 @@ export const UserDetail = () => {
         limit: 10,
         offset: 0,
       },
-      userId: parseFloat(params.userId),
+      userId: params.userId,
     },
   })
 
@@ -44,7 +44,7 @@ export const UserDetail = () => {
         <Grid item md={4}>
           <div>
             <div>id: {data?.publicUser?.id}</div>
-            <div>email: {data?.publicUser?.email}</div>
+            <div>nickName: {data?.publicUser?.nickName}</div>
             <img src={data?.publicUser?.profileImg ?? ''} />
           </div>
         </Grid>

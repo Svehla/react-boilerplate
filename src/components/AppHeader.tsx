@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     grow: {
       flexGrow: 1,
+      marginBottom: '2rem',
     },
     menuButton: {
       marginRight: theme.spacing(2),
@@ -100,7 +101,7 @@ export const APP_HEADER_QUERY = gql`
     isPublicUserLoggedIn
     publicUserViewer {
       id
-      email
+      nickName
       profileImg
       ...AppBarNotifications_data
     }
@@ -171,6 +172,7 @@ export const AppHeader = () => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      {/*
       <MenuItem>
         <IconButton aria-label='show 4 new mails' color='inherit'>
           <Badge badgeContent={4} color='secondary'>
@@ -179,6 +181,7 @@ export const AppHeader = () => {
         </IconButton>
         <p>Messages</p>
       </MenuItem>
+      */}
       <MenuItem>
         <IconButton aria-label='show 11 new notifications' color='inherit'>
           <Badge badgeContent={11} color='secondary'>
@@ -211,7 +214,8 @@ export const AppHeader = () => {
                 Daily faily
               </Typography>
             </Link>
-            <div className={classes.search}>
+            {/*
+             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
               </div>
@@ -224,6 +228,7 @@ export const AppHeader = () => {
                 inputProps={{ 'aria-label': 'search' }}
               />
             </div>
+            */}
             <div className={classes.grow} />
             {data?.isPublicUserLoggedIn ? (
               <div className={classes.sectionDesktop}>

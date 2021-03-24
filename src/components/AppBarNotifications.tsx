@@ -51,7 +51,7 @@ export const AppBarNotifications = (props: Props) => {
         onClose={handleClose}
       >
         {props.data?.notifications?.items?.map(i => (
-          <MenuItem key={i.id} onClick={handleClose}>
+          <MenuItem key={i?.id} onClick={handleClose}>
             <Link to={i?.urlPath ?? ''}>
               {i?.read ? <div>{i?.message}</div> : <b>{i?.message}</b>}
             </Link>

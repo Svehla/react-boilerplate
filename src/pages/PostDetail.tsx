@@ -9,12 +9,12 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import React, { useContext, useState } from 'react'
 
 export const POSTS_QUERY = gql`
-  query PostDetailQuery($id: Int!) {
+  query PostDetailQuery($id: ID!) {
     post(id: $id) {
       id
       text
       author {
-        email
+        nickName
         id
         profileImg
       }
@@ -33,7 +33,7 @@ export const POSTS_QUERY = gql`
           author {
             id
             profileImg
-            email
+            nickName
           }
         }
       }
@@ -64,7 +64,7 @@ export const PostDetail = () => {
     POSTS_QUERY,
     {
       variables: {
-        id: parseFloat(params.postId),
+        id: params.postId,
       },
     }
   )
@@ -90,7 +90,7 @@ export const PostDetail = () => {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Avatar src={post?.author?.profileImg ?? ''} style={{ margin: '1rem' }} />
           <Link to={`/profile/${post?.author?.id}`}>
-            <div>{post?.author?.email ?? '<unknown user>'}</div>
+            <div>{post?.author?.nickName ?? '<unknown user>'}</div>
           </Link>
         </div>
 
@@ -109,7 +109,7 @@ export const PostDetail = () => {
               variables: {
                 input: {
                   text: commentText,
-                  postId: parseFloat(params.postId),
+                  postId: params.postId,
                 },
               },
             })
@@ -140,7 +140,7 @@ export const PostDetail = () => {
         </h1>
       )}
 
-      {(post?.comments?.items ?? []).map(c => (
+      {post?.comments?.items?.map(c => (
         <div key={c?.id}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Avatar src={c?.author?.profileImg ?? ''} style={{ margin: '1rem' }} />
