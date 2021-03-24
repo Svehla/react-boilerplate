@@ -42,8 +42,8 @@ type RootQueryType {
   publicUserViewer: PublicUser
   publicUser(id: Int): PublicUser
   isPublicUserLoggedIn: Boolean
-  post(id: ID!): Post
-  posts(pagination: query_posts_args_pagination!): connection_query_posts_list
+  post(id: Int!): Post
+  posts(pagination: query_posts_args_pagination!, authorId: Int): connection_query_posts_list
   appVersion: String
 }
 
@@ -85,11 +85,13 @@ type Post {
 
 type PublicUser {
   id: ID!
+  nickName: String
   email: String
   loginType: PublicUserLoginTypeEnum
   profileImg: String
   posts(pagination: PublicUser_posts_args_pagination!): connection_PublicUser_posts_list
   reactions(pagination: PublicUser_reactions_args_pagination!): connection_PublicUser_reactions_list
+  notifications(pagination: PublicUser_notification_args_args_pagination!): connection_PublicUser_notification_list
 }
 
 enum PublicUserLoginTypeEnum {
@@ -126,6 +128,25 @@ enum ReactionTypeEnum {
 }
 
 input PublicUser_reactions_args_pagination {
+  offset: Int!
+  limit: Int!
+}
+
+type connection_PublicUser_notification_list {
+  count: Int
+  items: [Notification!]
+}
+
+type Notification {
+  id: ID!
+  message: String
+  urlPath: String
+  read: Boolean
+  createdAt: String
+  updatedAt: String
+}
+
+input PublicUser_notification_args_args_pagination {
   offset: Int!
   limit: Int!
 }

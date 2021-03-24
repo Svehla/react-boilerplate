@@ -1,10 +1,11 @@
+import { AppBarNotifications, NOTIFICATIONS_FRAGMENT } from './AppBarNotifications'
+import { AppHeader_Query } from './__generated__/AppHeader_Query'
 import { Avatar, Button, Container } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import { Logout as LogoutTypeMutation } from './__generated__/Logout'
 import { Theme, createStyles, fade, makeStyles } from '@material-ui/core/styles'
-import { UserDetailContext } from '../globalState/UserDetailContext'
 import { appConfig } from '../appConfig'
-import { gql, useMutation } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import { useHistory } from 'react-router'
 import AppBar from '@material-ui/core/AppBar'
 import Badge from '@material-ui/core/Badge'
@@ -15,7 +16,7 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import NotificationsIcon from '@material-ui/icons/Notifications'
-import React, { useContext } from 'react'
+import React from 'react'
 import SearchIcon from '@material-ui/icons/Search'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
@@ -92,12 +93,26 @@ export const LOG_OUT_PUBLIC_USER = gql`
   }
 `
 
+export const APP_HEADER_QUERY = gql`
+  ${NOTIFICATIONS_FRAGMENT}
+
+  query AppHeader_Query {
+    isPublicUserLoggedIn
+    publicUserViewer {
+      id
+      email
+      profileImg
+      ...AppBarNotifications_data
+    }
+  }
+`
+
 export const AppHeader = () => {
+  const { data, loading, error } = useQuery<AppHeader_Query>(APP_HEADER_QUERY)
+
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null)
-
-  const userDetail = useContext(UserDetailContext)
 
   const history = useHistory()
   const isMenuOpen = Boolean(anchorEl)
@@ -138,7 +153,7 @@ export const AppHeader = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={() => history.push(`/profile/${userDetail.data?.publicUserViewer?.id}`)}>
+      <MenuItem onClick={() => history.push(`/profile/${data?.publicUserViewer?.id}`)}>
         Profile
       </MenuItem>
       <MenuItem onClick={logoutPublicUser}>Log out</MenuItem>
@@ -179,7 +194,7 @@ export const AppHeader = () => {
           aria-haspopup='true'
           color='inherit'
         >
-          <Avatar src={userDetail.data?.publicUserViewer?.profileImg ?? ''} />
+          <Avatar src={data?.publicUserViewer?.profileImg ?? ''} />
         </IconButton>
         <p>Profile</p>
       </MenuItem>
@@ -210,18 +225,17 @@ export const AppHeader = () => {
               />
             </div>
             <div className={classes.grow} />
-            {userDetail.data?.isPublicUserLoggedIn ? (
+            {data?.isPublicUserLoggedIn ? (
               <div className={classes.sectionDesktop}>
+                {/* 
                 <IconButton aria-label='show 4 new mails' color='inherit'>
                   <Badge badgeContent={4} color='secondary'>
                     <MailIcon />
                   </Badge>
                 </IconButton>
-                <IconButton aria-label='show 17 new notifications' color='inherit'>
-                  <Badge badgeContent={17} color='secondary'>
-                    <NotificationsIcon />
-                  </Badge>
-                </IconButton>
+                */}
+
+                <AppBarNotifications data={data.publicUserViewer} />
                 <IconButton
                   edge='end'
                   aria-label='account of current user'
@@ -230,13 +244,11 @@ export const AppHeader = () => {
                   onClick={handleProfileMenuOpen}
                   color='inherit'
                 >
-                  <Avatar src={userDetail.data?.publicUserViewer?.profileImg ?? ''} />
+                  <Avatar src={data?.publicUserViewer?.profileImg ?? ''} />
                 </IconButton>
               </div>
             ) : (
-              <div
-              // className={classes.sectionDesktop}
-              >
+              <div>
                 <a href={appConfig.google.authLoginURL}>
                   <Button color={'primary'} style={{ color: 'white', textDecoration: 'none' }}>
                     Přihlásit se

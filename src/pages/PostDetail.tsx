@@ -9,7 +9,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import React, { useContext, useState } from 'react'
 
 export const POSTS_QUERY = gql`
-  query PostDetailQuery($id: ID!) {
+  query PostDetailQuery($id: Int!) {
     post(id: $id) {
       id
       text
@@ -64,6 +64,7 @@ export const PostDetail = () => {
     POSTS_QUERY,
     {
       variables: {
+        // @ts-ignore
         id: params.postId,
       },
     }

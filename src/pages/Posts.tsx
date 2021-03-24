@@ -1,7 +1,6 @@
-import { Avatar, Button, Card, Paper, TextField, Typography } from '@material-ui/core'
-import { Link, useParams } from 'react-router-dom'
+import { Button, TextField } from '@material-ui/core'
+import { POSTS_FEED_DATA_FRAGMENT, PostsFeed } from '../components/PostsFeed'
 import { PageLoader } from '../components/PageLoader'
-import { PostsQuery } from './__generated__/PostsQuery'
 import {
   Posts_AddPostMutation,
   Posts_AddPostMutationVariables,
@@ -13,24 +12,11 @@ import { gql, useMutation, useQuery } from '@apollo/client'
 import React, { useContext, useState } from 'react'
 
 export const POSTS_QUERY = gql`
+  ${POSTS_FEED_DATA_FRAGMENT}
+
   query Posts_Query {
     posts(pagination: { limit: 10, offset: 0 }) {
-      count
-      items {
-        id
-        text
-        author {
-          email
-          id
-          profileImg
-        }
-        reactions(pagination: { limit: 100, offset: 0 }) {
-          count
-        }
-        comments(pagination: { limit: 100, offset: 0 }) {
-          count
-        }
-      }
+      ...PostsFeed_data
     }
   }
 `
@@ -99,29 +85,12 @@ export const Posts = () => {
         </div>
       ) : (
         <h1>
-          Chceš napsat komentář?
+          Chceš napsat komentář?
           <a href={appConfig.google.authLoginURL}>TAK SE PŘIHLAŠ!</a>
         </h1>
       )}
-      <div>
-        {(data?.posts?.items ?? []).map(p => (
-          <div key={p.id} style={{ marginBottom: '50px' }}>
-            <Paper style={{ padding: '2rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Avatar src={p.author?.profileImg ?? ''} style={{ margin: '1rem' }} />
-                <Link to={`/profile/${p.author?.id}`}>{p.author?.email ?? '<unknown user>'}</Link>
-              </div>
 
-              <Typography variant='h5'>{p.text}</Typography>
-
-              <div>reactions count: {p.reactions?.count}</div>
-              <div>comments count: {p.comments?.count}</div>
-              <Link to={`/posts/${p.id}`}>detail</Link>
-            </Paper>
-          </div>
-        ))}
-        <div>only last 10 posts are shown</div>
-      </div>
+      <PostsFeed data={data?.posts} />
     </div>
   )
 }
