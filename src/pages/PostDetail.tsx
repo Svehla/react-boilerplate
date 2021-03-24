@@ -64,8 +64,7 @@ export const PostDetail = () => {
     POSTS_QUERY,
     {
       variables: {
-        // @ts-ignore
-        id: params.postId,
+        id: parseFloat(params.postId),
       },
     }
   )
@@ -90,7 +89,9 @@ export const PostDetail = () => {
       <Paper style={{ padding: '2rem' }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Avatar src={post?.author?.profileImg ?? ''} style={{ margin: '1rem' }} />
-          <div>{post?.author?.email ?? '<unknown user>'}</div>
+          <Link to={`/profile/${post?.author?.id}`}>
+            <div>{post?.author?.email ?? '<unknown user>'}</div>
+          </Link>
         </div>
 
         <Typography variant='h5'>{post?.text}</Typography>

@@ -32,7 +32,7 @@ type Props = {
 export const PostsFeed = (props: Props) => {
   return (
     <div>
-      <div>total comments: {props.data?.count}</div>
+      <div>total posts in dailyfaily.com: {props.data?.count}</div>
       {(props.data?.items ?? []).map(p => (
         <div key={p.id} style={{ marginBottom: '50px' }}>
           <Paper style={{ padding: '2rem' }}>
