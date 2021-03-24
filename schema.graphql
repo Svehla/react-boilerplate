@@ -40,6 +40,7 @@ directive @connection(
 type RootQueryType {
   users(pagination: query_users_args_pagination!): connection_query_users_list
   publicUserViewer: PublicUser
+  publicUser(id: Int): PublicUser
   isPublicUserLoggedIn: Boolean
   post(id: ID!): Post
   posts(pagination: query_posts_args_pagination!): connection_query_posts_list

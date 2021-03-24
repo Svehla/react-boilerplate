@@ -14,6 +14,15 @@ export enum ReactionTypeEnum {
   Reaction4 = "Reaction4",
 }
 
+export interface addCommentMutation_args_input_arg {
+  text?: any | null;
+  postId: number;
+}
+
+export interface addPostMutation_args_input_arg {
+  text?: any | null;
+}
+
 //==============================================================
 // END Enums and Input Objects
 //==============================================================

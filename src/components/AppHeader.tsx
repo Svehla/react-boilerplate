@@ -1,10 +1,11 @@
-import { Container } from '@material-ui/core'
+import { Avatar, Button, Container } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import { Logout as LogoutTypeMutation } from './__generated__/Logout'
 import { Theme, createStyles, fade, makeStyles } from '@material-ui/core/styles'
+import { UserDetailContext } from '../globalState/UserDetailContext'
+import { appConfig } from '../appConfig'
 import { gql, useMutation } from '@apollo/client'
 import { useHistory } from 'react-router'
-import AccountCircle from '@material-ui/icons/AccountCircle'
 import AppBar from '@material-ui/core/AppBar'
 import Badge from '@material-ui/core/Badge'
 import IconButton from '@material-ui/core/IconButton'
@@ -14,7 +15,7 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import NotificationsIcon from '@material-ui/icons/Notifications'
-import React from 'react'
+import React, { useContext } from 'react'
 import SearchIcon from '@material-ui/icons/Search'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
@@ -96,6 +97,8 @@ export const AppHeader = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null)
 
+  const userDetail = useContext(UserDetailContext)
+
   const history = useHistory()
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
@@ -135,7 +138,9 @@ export const AppHeader = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={() => history.push('/profile')}>Profile</MenuItem>
+      <MenuItem onClick={() => history.push(`/profile/${userDetail.data?.publicUserViewer?.id}`)}>
+        Profile
+      </MenuItem>
       <MenuItem onClick={logoutPublicUser}>Log out</MenuItem>
     </Menu>
   )
@@ -174,7 +179,7 @@ export const AppHeader = () => {
           aria-haspopup='true'
           color='inherit'
         >
-          <AccountCircle />
+          <Avatar src={userDetail.data?.publicUserViewer?.profileImg ?? ''} />
         </IconButton>
         <p>Profile</p>
       </MenuItem>
@@ -186,7 +191,7 @@ export const AppHeader = () => {
       <AppBar position='static'>
         <Container>
           <Toolbar>
-            <Link to={'/'}>
+            <Link to={'/'} style={{ textDecoration: 'none', color: 'white' }}>
               <Typography className={classes.title} variant='h6' noWrap>
                 Daily faily
               </Typography>
@@ -205,28 +210,40 @@ export const AppHeader = () => {
               />
             </div>
             <div className={classes.grow} />
-            <div className={classes.sectionDesktop}>
-              <IconButton aria-label='show 4 new mails' color='inherit'>
-                <Badge badgeContent={4} color='secondary'>
-                  <MailIcon />
-                </Badge>
-              </IconButton>
-              <IconButton aria-label='show 17 new notifications' color='inherit'>
-                <Badge badgeContent={17} color='secondary'>
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
-              <IconButton
-                edge='end'
-                aria-label='account of current user'
-                aria-controls={menuId}
-                aria-haspopup='true'
-                onClick={handleProfileMenuOpen}
-                color='inherit'
+            {userDetail.data?.isPublicUserLoggedIn ? (
+              <div className={classes.sectionDesktop}>
+                <IconButton aria-label='show 4 new mails' color='inherit'>
+                  <Badge badgeContent={4} color='secondary'>
+                    <MailIcon />
+                  </Badge>
+                </IconButton>
+                <IconButton aria-label='show 17 new notifications' color='inherit'>
+                  <Badge badgeContent={17} color='secondary'>
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
+                <IconButton
+                  edge='end'
+                  aria-label='account of current user'
+                  aria-controls={menuId}
+                  aria-haspopup='true'
+                  onClick={handleProfileMenuOpen}
+                  color='inherit'
+                >
+                  <Avatar src={userDetail.data?.publicUserViewer?.profileImg ?? ''} />
+                </IconButton>
+              </div>
+            ) : (
+              <div
+              // className={classes.sectionDesktop}
               >
-                <AccountCircle />
-              </IconButton>
-            </div>
+                <a href={appConfig.google.authLoginURL}>
+                  <Button color={'primary'} style={{ color: 'white', textDecoration: 'none' }}>
+                    Přihlásit se
+                  </Button>
+                </a>
+              </div>
+            )}
             <div className={classes.sectionMobile}>
               <IconButton
                 aria-label='show more'

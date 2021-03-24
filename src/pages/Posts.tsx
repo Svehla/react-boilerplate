@@ -1,12 +1,20 @@
-import { Avatar, Card, Paper, Typography } from '@material-ui/core'
+import { Avatar, Button, Card, Paper, TextField, Typography } from '@material-ui/core'
 import { Link, useParams } from 'react-router-dom'
+import { PageLoader } from '../components/PageLoader'
 import { PostsQuery } from './__generated__/PostsQuery'
-import { gql, useQuery } from '@apollo/client'
-import React from 'react'
+import {
+  Posts_AddPostMutation,
+  Posts_AddPostMutationVariables,
+} from './__generated__/Posts_AddPostMutation'
+import { Posts_Query } from './__generated__/Posts_Query'
+import { UserDetailContext } from '../globalState/UserDetailContext'
+import { appConfig } from '../appConfig'
+import { gql, useMutation, useQuery } from '@apollo/client'
+import React, { useContext, useState } from 'react'
 
 export const POSTS_QUERY = gql`
-  query PostsQuery {
-    posts(pagination: { limit: 3, offset: 0 }) {
+  query Posts_Query {
+    posts(pagination: { limit: 10, offset: 0 }) {
       count
       items {
         id
@@ -27,27 +35,93 @@ export const POSTS_QUERY = gql`
   }
 `
 
+export const ADD_POST_MUTATION = gql`
+  mutation Posts_AddPostMutation($input: addPostMutation_args_input_arg!) {
+    addPostMutation(input: $input) {
+      post {
+        id
+        text
+      }
+    }
+  }
+`
+
 export const Posts = () => {
-  const { data, loading, error } = useQuery<PostsQuery>(POSTS_QUERY)
+  const { data, loading, error, refetch } = useQuery<Posts_Query>(POSTS_QUERY)
+  const [postText, setPostText] = useState('')
+  const userDetail = useContext(UserDetailContext)
+
+  const [addPost] = useMutation<Posts_AddPostMutation, Posts_AddPostMutationVariables>(
+    ADD_POST_MUTATION
+  )
+
+  if (loading) {
+    return <PageLoader />
+  }
 
   return (
     <div style={{ marginTop: '2rem' }}>
-      {(data?.posts?.items ?? []).map(p => (
-        <div key={p.id} style={{ marginBottom: '50px' }}>
-          <Paper style={{ padding: '2rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Avatar src={p.author?.profileImg ?? ''} style={{ margin: '1rem' }} />
-              <div>{p.author?.email ?? '<unknown user>'}</div>
-            </div>
+      {userDetail.data?.isPublicUserLoggedIn ? (
+        <div>
+          <form
+            onSubmit={async e => {
+              e.preventDefault()
 
-            <Typography variant='h5'>{p.text}</Typography>
+              try {
+                await addPost({
+                  variables: {
+                    input: {
+                      text: postText,
+                    },
+                  },
+                })
 
-            <div>reactions count: {p.reactions?.count}</div>
-            <div>comments count: {p.comments?.count}</div>
-            <Link to={`/posts/${p.id}`}>detail</Link>
-          </Paper>
+                setPostText('')
+
+                refetch()
+              } catch (err) {
+                alert(JSON.stringify(err.message))
+              }
+            }}
+          >
+            <TextField
+              label='Přidat post'
+              onChange={e => {
+                setPostText(e.target.value)
+              }}
+              value={postText}
+              type='text'
+              disabled={loading}
+            />
+
+            <Button type='submit'>odeslat</Button>
+          </form>
         </div>
-      ))}
+      ) : (
+        <h1>
+          Chceš napsat komentář?
+          <a href={appConfig.google.authLoginURL}>TAK SE PŘIHLAŠ!</a>
+        </h1>
+      )}
+      <div>
+        {(data?.posts?.items ?? []).map(p => (
+          <div key={p.id} style={{ marginBottom: '50px' }}>
+            <Paper style={{ padding: '2rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Avatar src={p.author?.profileImg ?? ''} style={{ margin: '1rem' }} />
+                <Link to={`/profile/${p.author?.id}`}>{p.author?.email ?? '<unknown user>'}</Link>
+              </div>
+
+              <Typography variant='h5'>{p.text}</Typography>
+
+              <div>reactions count: {p.reactions?.count}</div>
+              <div>comments count: {p.comments?.count}</div>
+              <Link to={`/posts/${p.id}`}>detail</Link>
+            </Paper>
+          </div>
+        ))}
+        <div>only last 10 posts are shown</div>
+      </div>
     </div>
   )
 }
