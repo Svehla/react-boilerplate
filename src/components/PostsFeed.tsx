@@ -11,8 +11,9 @@ export const POSTS_FEED_DATA_FRAGMENT = gql`
       id
       text
       author {
-        nickName
         id
+        nickName
+        bio
         profileImg
       }
       reactions(pagination: { limit: 100, offset: 0 }) {
@@ -38,9 +39,12 @@ export const PostsFeed = (props: Props) => {
           <Paper style={{ padding: '2rem' }}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <Avatar src={p?.author?.profileImg ?? ''} style={{ margin: '1rem' }} />
-              <Link to={`/profile/${p?.author?.id}`}>
-                {p?.author?.nickName ?? '<unknown user>'}
-              </Link>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <Link to={`/profile/${p?.author?.id}`}>
+                  {p?.author?.nickName ?? '<unknown user>'}
+                </Link>
+                <div>{p?.author?.bio}</div>
+              </div>
             </div>
 
             <Typography variant='h5'>{p?.text}</Typography>

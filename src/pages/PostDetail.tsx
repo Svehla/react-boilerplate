@@ -16,6 +16,7 @@ export const POSTS_QUERY = gql`
       author {
         nickName
         id
+        bio
         profileImg
       }
       reactions(pagination: { limit: 100, offset: 0 }) {
@@ -23,6 +24,11 @@ export const POSTS_QUERY = gql`
         items {
           id
           reactionType
+          author {
+            id
+            profileImg
+            nickName
+          }
         }
       }
       comments(pagination: { limit: 100, offset: 0 }) {
@@ -91,6 +97,7 @@ export const PostDetail = () => {
           <Avatar src={post?.author?.profileImg ?? ''} style={{ margin: '1rem' }} />
           <Link to={`/profile/${post?.author?.id}`}>
             <div>{post?.author?.nickName ?? '<unknown user>'}</div>
+            <div>{post?.author?.bio ?? 'n00b'}</div>
           </Link>
         </div>
 
@@ -140,10 +147,19 @@ export const PostDetail = () => {
         </h1>
       )}
 
+      <hr />
+      {post?.reactions?.items?.map(c => (
+        <div key={c?.id} style={{ display: 'flex', alignItems: 'center' }}>
+          <div>{c?.reactionType}</div>
+        </div>
+      ))}
+
+      <hr />
       {post?.comments?.items?.map(c => (
         <div key={c?.id}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Avatar src={c?.author?.profileImg ?? ''} style={{ margin: '1rem' }} />
+            <div>{post?.author?.nickName}</div>
             <div>{c?.text}</div>
           </div>
         </div>

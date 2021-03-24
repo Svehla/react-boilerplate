@@ -86,6 +86,7 @@ type Post {
 type PublicUser {
   id: ID!
   nickName: String
+  bio: String
   loginType: PublicUserLoginTypeEnum
   profileImg: String
   posts(pagination: PublicUser_posts_args_pagination!): connection_PublicUser_posts_list

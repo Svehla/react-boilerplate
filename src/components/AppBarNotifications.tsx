@@ -36,7 +36,7 @@ export const AppBarNotifications = (props: Props) => {
   }
 
   return (
-    <div>
+    <div style={{ display: 'flex' }}>
       <IconButton color='inherit' onClick={handleClick}>
         <Badge badgeContent={props.data?.notifications?.count ?? 0} color='secondary'>
           <NotificationsIcon />

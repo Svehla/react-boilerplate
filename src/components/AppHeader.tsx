@@ -10,14 +10,11 @@ import { useHistory } from 'react-router'
 import AppBar from '@material-ui/core/AppBar'
 import Badge from '@material-ui/core/Badge'
 import IconButton from '@material-ui/core/IconButton'
-import InputBase from '@material-ui/core/InputBase'
-import MailIcon from '@material-ui/icons/Mail'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import NotificationsIcon from '@material-ui/icons/Notifications'
 import React from 'react'
-import SearchIcon from '@material-ui/icons/Search'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 
@@ -101,6 +98,7 @@ export const APP_HEADER_QUERY = gql`
     isPublicUserLoggedIn
     publicUserViewer {
       id
+      bio
       nickName
       profileImg
       ...AppBarNotifications_data
@@ -110,7 +108,6 @@ export const APP_HEADER_QUERY = gql`
 
 export const AppHeader = () => {
   const { data, loading, error } = useQuery<AppHeader_Query>(APP_HEADER_QUERY)
-
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -182,7 +179,7 @@ export const AppHeader = () => {
         <p>Messages</p>
       </MenuItem>
       */}
-      <MenuItem>
+      <MenuItem style={{ display: 'flex' }}>
         <IconButton aria-label='show 11 new notifications' color='inherit'>
           <Badge badgeContent={11} color='secondary'>
             <NotificationsIcon />
@@ -241,6 +238,7 @@ export const AppHeader = () => {
                 */}
 
                 <AppBarNotifications data={data.publicUserViewer} />
+
                 <IconButton
                   edge='end'
                   aria-label='account of current user'
