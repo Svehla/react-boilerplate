@@ -5,22 +5,31 @@ import { gql } from '@apollo/client'
 import React from 'react'
 
 export const POSTS_FEED_DATA_FRAGMENT = gql`
-  fragment PostsFeed_data on connection_query_posts_list {
-    count
-    items {
-      id
-      text
-      author {
+  fragment PostsFeed_data on cursor_connection_query_posts {
+    edges {
+      node {
         id
-        nickName
-        bio
-        profileImg
-      }
-      reactions(pagination: { limit: 100, offset: 0 }) {
-        count
-      }
-      comments(pagination: { limit: 100, offset: 0 }) {
-        count
+        text
+        author {
+          id
+          nickName
+          bio
+          profileImg
+        }
+        reactions(first: 10) {
+          edges {
+            node {
+              id
+            }
+          }
+        }
+        comments(first: 10) {
+          edges {
+            node {
+              id
+            }
+          }
+        }
       }
     }
   }
@@ -33,25 +42,24 @@ type Props = {
 export const PostsFeed = (props: Props) => {
   return (
     <div>
-      <div>total posts in dailyfaily.com: {props.data?.count}</div>
-      {(props.data?.items ?? []).map(p => (
-        <div key={p?.id} style={{ marginBottom: '50px' }}>
+      {props.data?.edges?.map(p => (
+        <div key={p?.node?.id} style={{ marginBottom: '50px' }}>
           <Paper style={{ padding: '2rem' }}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Avatar src={p?.author?.profileImg ?? ''} style={{ margin: '1rem' }} />
+              <Avatar src={p?.node?.author?.profileImg ?? ''} style={{ margin: '1rem' }} />
               <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <Link to={`/profile/${p?.author?.id}`}>
-                  {p?.author?.nickName ?? '<unknown user>'}
+                <Link to={`/profile/${p?.node?.author?.id}`}>
+                  {p?.node?.author?.nickName ?? '<unknown user>'}
                 </Link>
-                <div>{p?.author?.bio}</div>
+                <div>{p?.node?.author?.bio}</div>
               </div>
             </div>
 
-            <Typography variant='h5'>{p?.text}</Typography>
+            <Typography variant='h5'>{p?.node?.text}</Typography>
 
-            <div>reactions count: {p?.reactions?.count}</div>
-            <div>comments count: {p?.comments?.count}</div>
-            <Link to={`/posts/${p?.id}`}>detail</Link>
+            {/* <div>reactions count: {p?.reactions?.count}</div>
+            <div>comments count: {p?.comments?.count}</div> */}
+            <Link to={`/posts/${p?.node?.id}`}>detail</Link>
           </Paper>
         </div>
       ))}

@@ -95,8 +95,8 @@ export const APP_HEADER_QUERY = gql`
   ${NOTIFICATIONS_FRAGMENT}
 
   query AppHeader_Query {
-    isPublicUserLoggedIn
-    publicUserViewer {
+    isViewerLoggedIn
+    viewer {
       id
       bio
       nickName
@@ -151,9 +151,7 @@ export const AppHeader = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={() => history.push(`/profile/${data?.publicUserViewer?.id}`)}>
-        Profile
-      </MenuItem>
+      <MenuItem onClick={() => history.push(`/profile/${data?.viewer?.id}`)}>Profile</MenuItem>
       <MenuItem onClick={logoutPublicUser}>Log out</MenuItem>
     </Menu>
   )
@@ -194,7 +192,7 @@ export const AppHeader = () => {
           aria-haspopup='true'
           color='inherit'
         >
-          <Avatar src={data?.publicUserViewer?.profileImg ?? ''} />
+          <Avatar src={data?.viewer?.profileImg ?? ''} />
         </IconButton>
         <p>Profile</p>
       </MenuItem>
@@ -227,7 +225,7 @@ export const AppHeader = () => {
             </div>
             */}
             <div className={classes.grow} />
-            {data?.isPublicUserLoggedIn ? (
+            {data?.isViewerLoggedIn ? (
               <div className={classes.sectionDesktop}>
                 {/* 
                 <IconButton aria-label='show 4 new mails' color='inherit'>
@@ -237,7 +235,7 @@ export const AppHeader = () => {
                 </IconButton>
                 */}
 
-                <AppBarNotifications data={data.publicUserViewer} />
+                <AppBarNotifications data={data.viewer} />
 
                 <IconButton
                   edge='end'
@@ -247,7 +245,7 @@ export const AppHeader = () => {
                   onClick={handleProfileMenuOpen}
                   color='inherit'
                 >
-                  <Avatar src={data?.publicUserViewer?.profileImg ?? ''} />
+                  <Avatar src={data?.viewer?.profileImg ?? ''} />
                 </IconButton>
               </div>
             ) : (

@@ -15,7 +15,7 @@ export const POSTS_QUERY = gql`
   ${POSTS_FEED_DATA_FRAGMENT}
 
   query Posts_Query {
-    posts(pagination: { limit: 10, offset: 0 }) {
+    posts(first: 10) {
       ...PostsFeed_data
     }
   }
@@ -47,7 +47,7 @@ export const Posts = () => {
 
   return (
     <div style={{ marginTop: '2rem' }}>
-      {userDetail.data?.isPublicUserLoggedIn ? (
+      {userDetail.data?.isViewerLoggedIn ? (
         <div>
           <form
             onSubmit={async e => {

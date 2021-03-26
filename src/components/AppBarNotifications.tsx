@@ -9,13 +9,15 @@ import React from 'react'
 
 export const NOTIFICATIONS_FRAGMENT = gql`
   fragment AppBarNotifications_data on PublicUser {
-    notifications(pagination: { limit: 100, offset: 0 }) {
-      count
-      items {
-        id
-        message
-        urlPath
-        read
+    notificationsCount
+    notifications(first: 10) {
+      edges {
+        node {
+          id
+          message
+          urlPath
+          read
+        }
       }
     }
   }
@@ -38,7 +40,7 @@ export const AppBarNotifications = (props: Props) => {
   return (
     <div style={{ display: 'flex' }}>
       <IconButton color='inherit' onClick={handleClick}>
-        <Badge badgeContent={props.data?.notifications?.count ?? 0} color='secondary'>
+        <Badge badgeContent={props.data?.notificationsCount ?? 0} color='secondary'>
           <NotificationsIcon />
         </Badge>
       </IconButton>
@@ -50,10 +52,10 @@ export const AppBarNotifications = (props: Props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {props.data?.notifications?.items?.map(i => (
-          <MenuItem key={i?.id} onClick={handleClose}>
-            <Link to={i?.urlPath ?? ''}>
-              {i?.read ? <div>{i?.message}</div> : <b>{i?.message}</b>}
+        {props.data?.notifications?.edges?.map(i => (
+          <MenuItem key={i?.node?.id} onClick={handleClose}>
+            <Link to={i?.node?.urlPath ?? ''}>
+              {i?.node?.read ? <div>{i?.node?.message}</div> : <b>{i?.node?.message}</b>}
             </Link>
           </MenuItem>
         ))}

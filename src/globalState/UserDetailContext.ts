@@ -6,9 +6,9 @@ export const APP_VERSION = gql`
   query RootQuery {
     appVersion
 
-    isPublicUserLoggedIn
+    isViewerLoggedIn
 
-    publicUserViewer {
+    viewer {
       id
       nickName
       profileImg

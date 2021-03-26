@@ -23,11 +23,6 @@ export interface addPostMutation_args_input_arg {
   text?: any | null;
 }
 
-export interface query_posts_args_pagination {
-  offset: number;
-  limit: number;
-}
-
 //==============================================================
 // END Enums and Input Objects
 //==============================================================

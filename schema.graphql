@@ -39,11 +39,11 @@ directive @connection(
 
 type RootQueryType {
   users(pagination: query_users_args_pagination!): connection_query_users_list
-  publicUserViewer: PublicUser
+  viewer: PublicUser
   publicUser(id: ID!): PublicUser
-  isPublicUserLoggedIn: Boolean
+  isViewerLoggedIn: Boolean
   post(id: ID!): Post
-  posts(pagination: query_posts_args_pagination!, authorId: ID): connection_query_posts_list
+  posts(first: Int!, after: String, authorId: ID): cursor_connection_query_posts
   appVersion: String
 }
 
@@ -60,7 +60,6 @@ type User {
   profileImgUrl: String
   role: UserRoleEnum
   isEmailVerified: Boolean
-  posts(pagination: user_posts_args_args_pagination!): connection_user_posts_list
 }
 
 enum UserRoleEnum {
@@ -68,19 +67,9 @@ enum UserRoleEnum {
   Editor
 }
 
-type connection_user_posts_list {
-  count: Int
-  items: [Post]
-}
-
-type Post {
-  id: ID!
-  name: String
-  text: String
-  authorId: ID
-  author: PublicUser
-  comments(pagination: post_comments_args_pagination!): connection_post_comments_list
-  reactions(pagination: post_reactions_args_pagination!): connection_post_reactions_list
+input query_users_args_pagination {
+  offset: Int!
+  limit: Int!
 }
 
 type PublicUser {
@@ -89,30 +78,82 @@ type PublicUser {
   bio: String
   loginType: PublicUserLoginTypeEnum
   profileImg: String
-  posts(pagination: PublicUser_posts_args_pagination!): connection_PublicUser_posts_list
-  reactions(pagination: PublicUser_reactions_args_pagination!): connection_PublicUser_reactions_list
-  notifications(pagination: PublicUser_notification_args_args_pagination!): connection_PublicUser_notification_list
-  followers(pagination: PublicUser_followers_args_args_pagination!): connection_PublicUser_followers_list
-  following(pagination: PublicUser_following_args_args_pagination!): connection_PublicUser_following_list
+  totalPostsCount: Int
+  posts(first: Int!, after: String): cursor_connection_PublicUser_posts
+  reactions(first: Int!, after: String): cursor_connection_PublicUser_reactions
+  notificationsCount: Int
+  notifications(first: Int!, after: String): cursor_connection_PublicUser_notification
+  followers(first: Int!, after: String): cursor_connection_PublicUser_followers
+  following(first: Int!, after: String): cursor_connection_PublicUser_following
 }
 
 enum PublicUserLoginTypeEnum {
   Google
 }
 
-type connection_PublicUser_posts_list {
-  count: Int
-  items: [Post]
+type cursor_connection_PublicUser_posts {
+  pageInfo: cursor_connection_PublicUser_posts_page_info
+  edges: [cursor_connection_PublicUser_posts_edges]
 }
 
-input PublicUser_posts_args_pagination {
-  offset: Int!
-  limit: Int!
+type cursor_connection_PublicUser_posts_page_info {
+  hasNextPage: Boolean
+  startCursor: String
 }
 
-type connection_PublicUser_reactions_list {
-  count: Int
-  items: [PostReaction]
+type cursor_connection_PublicUser_posts_edges {
+  cursor: String
+  node: Post
+}
+
+type Post {
+  id: ID!
+  name: String
+  text: String
+  authorId: ID
+  author: PublicUser
+  comments(first: Int!, after: String): cursor_connection_post_comments
+  reactions(first: Int!, after: String): cursor_connection_post_reactions
+  createdAt: DateTime
+}
+
+type cursor_connection_post_comments {
+  pageInfo: cursor_connection_post_comments_page_info
+  edges: [cursor_connection_post_comments_edges]
+}
+
+type cursor_connection_post_comments_page_info {
+  hasNextPage: Boolean
+  startCursor: String
+}
+
+type cursor_connection_post_comments_edges {
+  cursor: String
+  node: Comment
+}
+
+type Comment {
+  id: ID!
+  text: String
+  authorId: ID
+  createdAt: String
+  updatedAt: String
+  author: PublicUser
+}
+
+type cursor_connection_post_reactions {
+  pageInfo: cursor_connection_post_reactions_page_info
+  edges: [cursor_connection_post_reactions_edges]
+}
+
+type cursor_connection_post_reactions_page_info {
+  hasNextPage: Boolean
+  startCursor: String
+}
+
+type cursor_connection_post_reactions_edges {
+  cursor: String
+  node: PostReaction
 }
 
 type PostReaction {
@@ -129,14 +170,39 @@ enum ReactionTypeEnum {
   Reaction4
 }
 
-input PublicUser_reactions_args_pagination {
-  offset: Int!
-  limit: Int!
+"""
+The DateTime scalar type represents date time strings complying to ISO-8601.
+"""
+scalar DateTime
+
+type cursor_connection_PublicUser_reactions {
+  pageInfo: cursor_connection_PublicUser_reactions_page_info
+  edges: [cursor_connection_PublicUser_reactions_edges]
 }
 
-type connection_PublicUser_notification_list {
-  count: Int
-  items: [Notification]
+type cursor_connection_PublicUser_reactions_page_info {
+  hasNextPage: Boolean
+  startCursor: String
+}
+
+type cursor_connection_PublicUser_reactions_edges {
+  cursor: String
+  node: PostReaction
+}
+
+type cursor_connection_PublicUser_notification {
+  pageInfo: cursor_connection_PublicUser_notification_page_info
+  edges: [cursor_connection_PublicUser_notification_edges]
+}
+
+type cursor_connection_PublicUser_notification_page_info {
+  hasNextPage: Boolean
+  startCursor: String
+}
+
+type cursor_connection_PublicUser_notification_edges {
+  cursor: String
+  node: Notification
 }
 
 type Notification {
@@ -148,78 +214,49 @@ type Notification {
   updatedAt: String
 }
 
-input PublicUser_notification_args_args_pagination {
-  offset: Int!
-  limit: Int!
+type cursor_connection_PublicUser_followers {
+  pageInfo: cursor_connection_PublicUser_followers_page_info
+  edges: [cursor_connection_PublicUser_followers_edges]
 }
 
-type connection_PublicUser_followers_list {
-  count: Int
-  items: [PublicUser]
+type cursor_connection_PublicUser_followers_page_info {
+  hasNextPage: Boolean
+  startCursor: String
 }
 
-input PublicUser_followers_args_args_pagination {
-  offset: Int!
-  limit: Int!
+type cursor_connection_PublicUser_followers_edges {
+  cursor: String
+  node: PublicUser
 }
 
-type connection_PublicUser_following_list {
-  count: Int
-  items: [PublicUser]
+type cursor_connection_PublicUser_following {
+  pageInfo: cursor_connection_PublicUser_following_page_info
+  edges: [cursor_connection_PublicUser_following_edges]
 }
 
-input PublicUser_following_args_args_pagination {
-  offset: Int!
-  limit: Int!
+type cursor_connection_PublicUser_following_page_info {
+  hasNextPage: Boolean
+  startCursor: String
 }
 
-type connection_post_comments_list {
-  count: Int
-  items: [Comment]
+type cursor_connection_PublicUser_following_edges {
+  cursor: String
+  node: PublicUser
 }
 
-type Comment {
-  id: ID!
-  text: String
-  authorId: ID
-  createdAt: String
-  updatedAt: String
-  author: PublicUser
+type cursor_connection_query_posts {
+  pageInfo: cursor_connection_query_posts_page_info
+  edges: [cursor_connection_query_posts_edges]
 }
 
-input post_comments_args_pagination {
-  offset: Int!
-  limit: Int!
+type cursor_connection_query_posts_page_info {
+  hasNextPage: Boolean
+  startCursor: String
 }
 
-type connection_post_reactions_list {
-  count: Int
-  items: [PostReaction]
-}
-
-input post_reactions_args_pagination {
-  offset: Int!
-  limit: Int!
-}
-
-input user_posts_args_args_pagination {
-  offset: Int!
-  limit: Int!
-}
-
-input query_users_args_pagination {
-  offset: Int!
-  limit: Int!
-}
-
-type connection_query_posts_list {
-  count: Int
-  items: [Post]
-}
-
-input query_posts_args_pagination {
-  offset: Int!
-  limit: Int!
+type cursor_connection_query_posts_edges {
+  cursor: String
+  node: Post
 }
 
 type RootMutationType {
@@ -232,6 +269,7 @@ type RootMutationType {
   addPostReactionMutation(input: addPostReactionMutation_args_input_arg!): addPostReactionMutation_type
   addFollowPublicUser(input: addFollowPublicUser_input_input_arg!): addFollowPublicUser_type
   deleteFollowPublicUser(input: deleteFollowPublicUser_input_input_arg!): deleteFollowPublicUser_type
+  updateNickNameMutation(input: updateNickNameMutation_input_input_arg!): updateNickNameMutation_type
 }
 
 type user_login_output {
@@ -324,3 +362,14 @@ type deleteFollowPublicUser_type {
 input deleteFollowPublicUser_input_input_arg {
   followerId: Int!
 }
+
+type updateNickNameMutation_type {
+  updatedUser: PublicUser
+}
+
+input updateNickNameMutation_input_input_arg {
+  newNickName: LimitedString4
+}
+
+"""A limited string. Has to be between 3 and 50 characters long."""
+scalar LimitedString4

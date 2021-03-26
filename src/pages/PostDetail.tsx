@@ -19,27 +19,29 @@ export const POSTS_QUERY = gql`
         bio
         profileImg
       }
-      reactions(pagination: { limit: 100, offset: 0 }) {
-        count
-        items {
-          id
-          reactionType
-          author {
+      reactions(first: 10) {
+        edges {
+          node {
             id
-            profileImg
-            nickName
+            reactionType
+            author {
+              id
+              profileImg
+              nickName
+            }
           }
         }
       }
-      comments(pagination: { limit: 100, offset: 0 }) {
-        count
-        items {
-          id
-          text
-          author {
+      comments(first: 10) {
+        edges {
+          node {
             id
-            profileImg
-            nickName
+            text
+            author {
+              id
+              profileImg
+              nickName
+            }
           }
         }
       }
@@ -103,15 +105,14 @@ export const PostDetail = () => {
 
         <Typography variant='h5'>{post?.text}</Typography>
 
-        <div>reactions count: {post?.reactions?.count}</div>
-        <div>comments count: {post?.comments?.count}</div>
+        {/* <div>reactions count: {post?.reactions?.count}</div>
+        <div>comments count: {post?.comments?.count}</div> */}
       </Paper>
 
-      {userDetail.data?.isPublicUserLoggedIn ? (
+      {userDetail.data?.isViewerLoggedIn ? (
         <form
           onSubmit={async e => {
             e.preventDefault()
-
             await addComment({
               variables: {
                 input: {
@@ -120,9 +121,7 @@ export const PostDetail = () => {
                 },
               },
             })
-
             setCommentText('')
-
             refetch()
           }}
         >
@@ -148,19 +147,19 @@ export const PostDetail = () => {
       )}
 
       <hr />
-      {post?.reactions?.items?.map(c => (
-        <div key={c?.id} style={{ display: 'flex', alignItems: 'center' }}>
-          <div>{c?.reactionType}</div>
+      {post?.reactions?.edges?.map(c => (
+        <div key={c?.node?.id} style={{ display: 'flex', alignItems: 'center' }}>
+          <div>{c?.node?.reactionType}</div>
         </div>
       ))}
 
       <hr />
-      {post?.comments?.items?.map(c => (
-        <div key={c?.id}>
+      {post?.comments?.edges?.map(c => (
+        <div key={c?.node?.id}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Avatar src={c?.author?.profileImg ?? ''} style={{ margin: '1rem' }} />
+            <Avatar src={c?.node?.author?.profileImg ?? ''} style={{ margin: '1rem' }} />
             <div>{post?.author?.nickName}</div>
-            <div>{c?.text}</div>
+            <div>{c?.node?.text}</div>
           </div>
         </div>
       ))}

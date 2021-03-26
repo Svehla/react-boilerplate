@@ -8,14 +8,14 @@ import React from 'react'
 const USER_DETAIL_QUERY = gql`
   ${POSTS_FEED_DATA_FRAGMENT}
 
-  query UserDetailQuery($userId: ID!, $feedPostsArgs: query_posts_args_pagination!) {
+  query UserDetailQuery($userId: ID!) {
     publicUser(id: $userId) {
       id
       nickName
       profileImg
     }
 
-    posts(pagination: $feedPostsArgs, authorId: $userId) {
+    posts(first: 10) {
       ...PostsFeed_data
     }
   }
@@ -26,10 +26,6 @@ export const UserDetail = () => {
 
   const { data } = useQuery<UserDetailQuery, UserDetailQueryVariables>(USER_DETAIL_QUERY, {
     variables: {
-      feedPostsArgs: {
-        limit: 10,
-        offset: 0,
-      },
       userId: params.userId,
     },
   })
