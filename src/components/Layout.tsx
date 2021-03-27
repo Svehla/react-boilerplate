@@ -2,7 +2,6 @@ import { AppDeveloperBar } from './AppDeveloperBar'
 import { AppHeader } from './AppHeader'
 import { Container } from '@material-ui/core'
 import { appEnvs } from '../appConfig'
-import React from 'react'
 
 type Props = {
   children: any

@@ -3,7 +3,6 @@ import { POSTS_FEED_DATA_FRAGMENT, PostsFeed } from '../components/PostsFeed'
 import { UserDetailQuery, UserDetailQueryVariables } from './__generated__/UserDetailQuery'
 import { gql, useQuery } from '@apollo/client'
 import { useParams } from 'react-router'
-import React from 'react'
 
 const USER_DETAIL_QUERY = gql`
   ${POSTS_FEED_DATA_FRAGMENT}

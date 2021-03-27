@@ -1,6 +1,6 @@
+import { Fragment } from 'react'
 import { MuiThemeProvider, useTheme } from '@material-ui/core/styles'
 import { muiTheme } from './muiTheme'
-import React from 'react'
 
 type Props = {
   children: React.ReactNode
@@ -11,7 +11,7 @@ const InjectThemeToWindow = () => {
   const theme = useTheme()
   window.theme = theme
 
-  return <React.Fragment />
+  return <Fragment />
 }
 
 export const AppTheme = ({ children }: Props) => {

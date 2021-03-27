@@ -2,10 +2,10 @@ import { AppBarNotifications_data } from './__generated__/AppBarNotifications_da
 import { Badge, IconButton } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import { gql } from '@apollo/client'
+import { useState } from 'react'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import NotificationsIcon from '@material-ui/icons/Notifications'
-import React from 'react'
 
 export const NOTIFICATIONS_FRAGMENT = gql`
   fragment AppBarNotifications_data on PublicUser {
@@ -27,7 +27,7 @@ type Props = {
 }
 
 export const AppBarNotifications = (props: Props) => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)

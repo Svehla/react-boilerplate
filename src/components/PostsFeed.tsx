@@ -2,7 +2,6 @@ import { Avatar, Paper, Typography } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import { PostsFeed_data } from './__generated__/PostsFeed_data'
 import { gql } from '@apollo/client'
-import React from 'react'
 
 export const POSTS_FEED_DATA_FRAGMENT = gql`
   fragment PostsFeed_data on cursor_connection_query_posts {

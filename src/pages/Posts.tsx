@@ -9,7 +9,7 @@ import { Posts_Query } from './__generated__/Posts_Query'
 import { UserDetailContext } from '../globalState/UserDetailContext'
 import { appConfig } from '../appConfig'
 import { gql, useMutation, useQuery } from '@apollo/client'
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 
 export const POSTS_QUERY = gql`
   ${POSTS_FEED_DATA_FRAGMENT}

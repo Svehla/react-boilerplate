@@ -9,7 +9,7 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
 import { UserDetail } from './pages/UserDetail'
 import { UserDetailContext } from './globalState/UserDetailContext'
 import { appConfig } from './appConfig'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 
 export const AppRoutes = () => {
   const userDetail = useContext(UserDetailContext)
