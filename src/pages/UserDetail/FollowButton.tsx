@@ -13,7 +13,7 @@ import { FollowButton_userDetailData } from './__generated__/FollowButton_userDe
 import { FollowButton_viewerData } from './__generated__/FollowButton_viewerData'
 import { POSTS_FEED_DATA_FRAGMENT, PostsFeed } from '../../components/PostsFeed'
 import { RemoveFromQueue } from '@material-ui/icons'
-import { UserDetailQuery, UserDetailQueryVariables } from '../__generated__/UserDetailQuery'
+import { UserDetailQuery, UserDetailQueryVariables } from './__generated__/UserDetailQuery'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useParams } from 'react-router'
 import React from 'react'

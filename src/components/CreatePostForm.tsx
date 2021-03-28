@@ -2,7 +2,7 @@ import { Button, Grid, TextField } from '@material-ui/core'
 import {
   Posts_AddPostMutation,
   Posts_AddPostMutationVariables,
-} from '../pages/__generated__/Posts_AddPostMutation'
+} from './__generated__/Posts_AddPostMutation'
 import { Skeleton } from '@material-ui/lab'
 import { appConfig } from '../appConfig'
 import { gql, useMutation } from '@apollo/client'

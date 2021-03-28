@@ -7,7 +7,7 @@ import {
   FollowButton,
 } from './FollowButton'
 import { POSTS_FEED_DATA_FRAGMENT, PostsFeed } from '../../components/PostsFeed'
-import { UserDetailQuery, UserDetailQueryVariables } from '../__generated__/UserDetailQuery'
+import { UserDetailQuery, UserDetailQueryVariables } from './__generated__/UserDetailQuery'
 import { gql, useQuery } from '@apollo/client'
 import { useParams } from 'react-router'
 import React from 'react'
@@ -69,20 +69,12 @@ export const UserDetail = () => {
 
           <FollowButton
             refetch={refetch}
-            // @ts-expect-error
             viewerData={data?.viewer}
-            // @ts-expect-error
             userDetailData={data?.publicUser}
             loading={loading}
           />
-          <Following
-            // @ts-expect-error
-            data={data?.publicUser}
-          />
-          <Followers
-            // @ts-expect-error
-            data={data?.publicUser}
-          />
+          <Following data={data?.publicUser} />
+          <Followers data={data?.publicUser} />
         </Grid>
         <Grid item md={8}>
           <PostsFeed data={data?.posts} loading={loading} />
