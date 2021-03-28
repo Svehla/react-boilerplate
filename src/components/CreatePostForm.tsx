@@ -73,7 +73,7 @@ const CreatePostForm = ({ isLogged, loading, refetch }: Props) => {
             rows={4}
             multiline
             fullWidth
-            placeholder='Co tě dnes nasralo?'
+            placeholder='Tvůj dnešní fail?'
             onChange={e => {
               setPostText(e.target.value)
             }}
