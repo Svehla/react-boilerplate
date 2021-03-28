@@ -3,6 +3,7 @@ import { AppHeader_Query } from './__generated__/AppHeader_Query'
 import { Avatar, Button, Container } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import { Logout as LogoutTypeMutation } from './__generated__/Logout'
+import { Skeleton } from '@material-ui/lab'
 import { Theme, createStyles, fade, makeStyles } from '@material-ui/core/styles'
 import { appConfig } from '../appConfig'
 import { gql, useMutation, useQuery } from '@apollo/client'
@@ -225,7 +226,11 @@ export const AppHeader = () => {
             </div>
             */}
             <div className={classes.grow} />
-            {data?.isViewerLoggedIn ? (
+            {loading ? (
+              <div>
+                {/* <Skeleton variant='circle' width={40} height={40} style={{ margin: '1rem' }} /> */}
+              </div>
+            ) : data?.isViewerLoggedIn ? (
               <div className={classes.sectionDesktop}>
                 {/* 
                 <IconButton aria-label='show 4 new mails' color='inherit'>
@@ -235,7 +240,7 @@ export const AppHeader = () => {
                 </IconButton>
                 */}
 
-                <AppBarNotifications data={data.viewer} />
+                <AppBarNotifications data={data?.viewer} />
 
                 <IconButton
                   edge='end'

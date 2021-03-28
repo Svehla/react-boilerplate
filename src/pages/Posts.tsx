@@ -6,6 +6,7 @@ import {
   Posts_AddPostMutationVariables,
 } from './__generated__/Posts_AddPostMutation'
 import { Posts_Query } from './__generated__/Posts_Query'
+import { Skeleton } from '@material-ui/lab'
 import { UserDetailContext } from '../globalState/UserDetailContext'
 import { appConfig } from '../appConfig'
 import { gql, useMutation, useQuery } from '@apollo/client'
@@ -41,13 +42,11 @@ export const Posts = () => {
     ADD_POST_MUTATION
   )
 
-  if (loading) {
-    return <PageLoader />
-  }
-
   return (
     <div style={{ marginTop: '2rem' }}>
-      {userDetail.data?.isViewerLoggedIn ? (
+      {loading ? (
+        <Skeleton variant='rect' width={'100%'} height={47} />
+      ) : userDetail.data?.isViewerLoggedIn ? (
         <div>
           <form
             onSubmit={async e => {
@@ -90,7 +89,7 @@ export const Posts = () => {
         </h1>
       )}
 
-      <PostsFeed data={data?.posts} />
+      <PostsFeed loading={loading} data={data?.posts} />
     </div>
   )
 }
