@@ -12,12 +12,6 @@ import { appConfig } from './appConfig'
 import React, { useContext } from 'react'
 
 export const AppRoutes = () => {
-  const userDetail = useContext(UserDetailContext)
-
-  if (userDetail.loading) {
-    return <PageLoader />
-  }
-
   return (
     <Router>
       <div>

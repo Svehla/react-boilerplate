@@ -24,13 +24,16 @@ const USER_DETAIL_QUERY = gql`
 export const UserDetail = () => {
   const params = useParams<{ userId: string }>()
 
-  const { data } = useQuery<UserDetailQuery, UserDetailQueryVariables>(USER_DETAIL_QUERY, {
-    variables: {
-      userId: params.userId,
-    },
-  })
+  const { data, loading, error } = useQuery<UserDetailQuery, UserDetailQueryVariables>(
+    USER_DETAIL_QUERY,
+    {
+      variables: {
+        userId: params.userId,
+      },
+    }
+  )
 
-  if (!data) {
+  if (!data && !error && !loading) {
     return <div>404 user not found</div>
   }
 
@@ -45,7 +48,7 @@ export const UserDetail = () => {
           </div>
         </Grid>
         <Grid item md={8}>
-          <PostsFeed data={data.posts} />
+          <PostsFeed data={data?.posts} loading={loading} />
         </Grid>
       </Grid>
     </Container>
