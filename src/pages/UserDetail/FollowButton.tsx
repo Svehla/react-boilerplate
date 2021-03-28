@@ -2,7 +2,7 @@ import { Button, Container, Grid } from '@material-ui/core'
 import {
   DeleteFollowPublicUser,
   DeleteFollowPublicUserVariables,
-} from './__generated__/deleteFollowPublicUser'
+} from './__generated__/DeleteFollowPublicUser'
 import { FOLLOWERS_DATA_FRAGMENT, Followers } from './Followers'
 import { FOLLOWING_DATA_FRAGMENT, Following } from './Following'
 import {

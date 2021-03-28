@@ -8,6 +8,7 @@ import { Theme, createStyles, fade, makeStyles } from '@material-ui/core/styles'
 import { appConfig } from '../appConfig'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useHistory } from 'react-router'
+import { useState } from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Badge from '@material-ui/core/Badge'
 import IconButton from '@material-ui/core/IconButton'
@@ -15,7 +16,6 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import NotificationsIcon from '@material-ui/icons/Notifications'
-import React from 'react'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 
@@ -110,8 +110,8 @@ export const APP_HEADER_QUERY = gql`
 export const AppHeader = () => {
   const { data, loading, error } = useQuery<AppHeader_Query>(APP_HEADER_QUERY)
   const classes = useStyles()
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null)
 
   const history = useHistory()
   const isMenuOpen = Boolean(anchorEl)

@@ -60,6 +60,8 @@ module.exports = {
     'no-irregular-whitespace': 'warn',
     'react-hooks/exhaustive-deps': 0,
     'react/display-name': 0,
+    'react/jsx-uses-react': 'off',
+    'react/react-in-jsx-scope': 'off',
   },
   plugins: ['sort-imports-es6-autofix'],
   settings: {

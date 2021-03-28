@@ -85,11 +85,7 @@ export const UserDetail = () => {
           />
         </Grid>
         <Grid item md={8}>
-          <PostsFeed
-            // @ts-expect-error
-            data={data?.posts}
-            loading={loading}
-          />
+          <PostsFeed data={data?.posts} loading={loading} />
         </Grid>
       </Grid>
     </Container>

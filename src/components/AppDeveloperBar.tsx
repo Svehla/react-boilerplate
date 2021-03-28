@@ -1,7 +1,7 @@
 import { UserDetailContext } from '../globalState/UserDetailContext'
 import { appEnvs } from '../appConfig'
 import { makeStyles } from '@material-ui/core/styles'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 
 const useStyles = makeStyles(theme => ({
   wrapper: {

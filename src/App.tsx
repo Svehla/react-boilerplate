@@ -6,7 +6,6 @@ import { UserDetailContextProvider } from './globalState/UserDetailContext'
 import { appConfig } from './appConfig'
 import { cache } from './cache'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import React from 'react'
 
 const link = createHttpLink({
   uri: appConfig.graphqlUrl,

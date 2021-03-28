@@ -5,8 +5,8 @@ import { PostDetailQuery, PostDetailQueryVariables } from './__generated__/PostD
 import { UserDetailContext } from '../globalState/UserDetailContext'
 import { appConfig } from '../appConfig'
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useContext, useState } from 'react'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
-import React, { useContext, useState } from 'react'
 
 export const POSTS_QUERY = gql`
   query PostDetailQuery($id: ID!) {
