@@ -31,6 +31,7 @@ export const POSTS_FEED_DATA_FRAGMENT = gql`
               text
               author {
                 id
+                nickName
                 profileImg
               }
             }
@@ -78,6 +79,8 @@ export const PostsFeed = (props: Props) => {
               {p?.node?.comments?.edges?.map((c, i) => (
                 <div key={c?.node?.id ?? i} style={{ display: 'flex', padding: '0.5rem' }}>
                   <Avatar src={c?.node?.author?.profileImg ?? ''} />
+                  <Link to={`/profile/${c?.node?.author?.id}`}>{c?.node?.author?.nickName}</Link>
+
                   {c?.node?.text}
                 </div>
               ))}

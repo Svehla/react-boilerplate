@@ -104,9 +104,6 @@ export const PostDetail = () => {
         </div>
 
         <Typography variant='h5'>{post?.text}</Typography>
-
-        {/* <div>reactions count: {post?.reactions?.count}</div>
-        <div>comments count: {post?.comments?.count}</div> */}
       </Paper>
 
       {userDetail.data?.isViewerLoggedIn ? (
@@ -158,7 +155,7 @@ export const PostDetail = () => {
         <div key={c?.node?.id}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Avatar src={c?.node?.author?.profileImg ?? ''} style={{ margin: '1rem' }} />
-            <div>{post?.author?.nickName}</div>
+            <Link to={`/profile/${c?.node?.author?.id ?? ''}`}>{post?.author?.nickName}</Link>
             <div>{c?.node?.text}</div>
           </div>
         </div>

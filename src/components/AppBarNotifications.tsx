@@ -52,6 +52,10 @@ export const AppBarNotifications = (props: Props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
+        <MenuItem>
+          <Link to={'/notifications'}>Show all notifications</Link>
+        </MenuItem>
+
         {props.data?.notifications?.edges?.map(i => (
           <MenuItem key={i?.node?.id} onClick={handleClose}>
             <Link to={i?.node?.urlPath ?? ''}>
