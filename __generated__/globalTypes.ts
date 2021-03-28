@@ -19,8 +19,16 @@ export interface addCommentMutation_args_input_arg {
   postId: string;
 }
 
+export interface addFollowPublicUser_input_input_arg {
+  toFollowId: string;
+}
+
 export interface addPostMutation_args_input_arg {
   text?: any | null;
+}
+
+export interface deleteFollowPublicUser_input_input_arg {
+  followingId: string;
 }
 
 //==============================================================

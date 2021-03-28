@@ -44,6 +44,7 @@ type RootQueryType {
   isViewerLoggedIn: Boolean
   post(id: ID!): Post
   posts(first: Int!, after: String, authorId: ID): cursor_connection_query_posts
+  dynamoItems: [DynamoItem]
   appVersion: String
 }
 
@@ -79,6 +80,7 @@ type PublicUser {
   loginType: PublicUserLoginTypeEnum
   profileImg: String
   totalPostsCount: Int
+  amIFollowing: Boolean
   posts(first: Int!, after: String): cursor_connection_PublicUser_posts
   reactions(first: Int!, after: String): cursor_connection_PublicUser_reactions
   notificationsCount: Int
@@ -112,6 +114,7 @@ type Post {
   text: String
   authorId: ID
   author: PublicUser
+  commentsCount: Int
   comments(first: Int!, after: String): cursor_connection_post_comments
   reactions(first: Int!, after: String): cursor_connection_post_reactions
   createdAt: DateTime
@@ -159,7 +162,7 @@ type cursor_connection_post_reactions_edges {
 type PostReaction {
   id: ID!
   reactionType: ReactionTypeEnum
-  publicUserId: String
+  authorId: String
   author: PublicUser
 }
 
@@ -259,6 +262,12 @@ type cursor_connection_query_posts_edges {
   node: Post
 }
 
+type DynamoItem {
+  id: ID!
+  name: String
+  authorId: ID
+}
+
 type RootMutationType {
   userLogin(input: user_login_mutation_input_input_arg!): user_login_output
   userRegistrationMutation(input: user_registration_mutation_input_input_arg!): user_registration_output
@@ -270,6 +279,7 @@ type RootMutationType {
   addFollowPublicUser(input: addFollowPublicUser_input_input_arg!): addFollowPublicUser_type
   deleteFollowPublicUser(input: deleteFollowPublicUser_input_input_arg!): deleteFollowPublicUser_type
   updateNickNameMutation(input: updateNickNameMutation_input_input_arg!): updateNickNameMutation_type
+  addDynamoItemMutation(input: addDynamoItemMutation_args_input_arg!): addDynamoItemMutation_type
 }
 
 type user_login_output {
@@ -352,7 +362,7 @@ type addFollowPublicUser_type {
 }
 
 input addFollowPublicUser_input_input_arg {
-  followerId: ID!
+  toFollowId: ID!
 }
 
 type deleteFollowPublicUser_type {
@@ -360,7 +370,7 @@ type deleteFollowPublicUser_type {
 }
 
 input deleteFollowPublicUser_input_input_arg {
-  followerId: Int!
+  followingId: String!
 }
 
 type updateNickNameMutation_type {
@@ -373,3 +383,11 @@ input updateNickNameMutation_input_input_arg {
 
 """A limited string. Has to be between 3 and 50 characters long."""
 scalar LimitedString4
+
+type addDynamoItemMutation_type {
+  dynamoItem: DynamoItem
+}
+
+input addDynamoItemMutation_args_input_arg {
+  name: String!
+}
