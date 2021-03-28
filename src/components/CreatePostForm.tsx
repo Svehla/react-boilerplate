@@ -33,7 +33,7 @@ const CreatePostForm = ({ isLogged, loading, refetch }: Props) => {
   const [postText, setPostText] = useState('')
 
   if (loading) {
-    return <Skeleton variant='rect' width={'100%'} height={47} />
+    return <Skeleton variant='rect' width={'100%'} height={150} />
   }
 
   if (!isLogged) {
