@@ -22,9 +22,10 @@ export const ADD_POST_MUTATION = gql`
 type Props = {
   isLogged: boolean
   loading: boolean
+  refetch: () => void
 }
 
-const CreatePostForm = ({ isLogged, loading }: Props) => {
+const CreatePostForm = ({ isLogged, loading, refetch }: Props) => {
   const [addPost] = useMutation<Posts_AddPostMutation, Posts_AddPostMutationVariables>(
     ADD_POST_MUTATION
   )
@@ -62,6 +63,8 @@ const CreatePostForm = ({ isLogged, loading }: Props) => {
         } catch (err) {
           alert(JSON.stringify(err.message))
         }
+
+        refetch()
       }}
     >
       <Grid container spacing={2}>

@@ -27,6 +27,7 @@ export const Posts = () => {
           <CardContent>
             <CreatePostForm
               loading={loading}
+              refetch={refetch}
               isLogged={userDetail?.data?.isViewerLoggedIn ?? false}
             />
           </CardContent>
