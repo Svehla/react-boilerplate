@@ -3,14 +3,14 @@ variable "project" {
   type        = string
 }
 
-
-variable "env" {
+variable "environment" {
   description = "The enviroment"
   type        = string
 }
 
 variable "tags" {
-  type = map(string)
+  type    = map(string)
+  default = {}
 }
 
 variable "region" {
@@ -20,4 +20,9 @@ variable "region" {
 
 variable "domain" {
   description = "domain"
+}
+
+variable "subdomain_dot_prefix" {
+  description = "this variable has to end with dot. for example my-subdom."
+  type        = string
 }

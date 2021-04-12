@@ -3,10 +3,9 @@ data "aws_route53_zone" "this" {
   private_zone = false
 }
 
-
 resource "aws_route53_record" "root_domain" {
   zone_id = data.aws_route53_zone.this.zone_id
-  name    = var.domain
+  name    = "${var.subdomain_dot_prefix}${var.domain}"
   type    = "A"
 
   alias {
@@ -18,7 +17,7 @@ resource "aws_route53_record" "root_domain" {
 
 resource "aws_route53_record" "www_domain" {
   zone_id = data.aws_route53_zone.this.zone_id
-  name    = "www.${var.domain}"
+  name    = "www.${var.subdomain_dot_prefix}${var.domain}"
   type    = "A"
 
   alias {
@@ -27,7 +26,6 @@ resource "aws_route53_record" "www_domain" {
     evaluate_target_health = false
   }
 }
-
 
 resource "aws_route53_record" "acm_cloudfront" {
   for_each = {

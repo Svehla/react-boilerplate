@@ -1,10 +1,20 @@
+
+
+locals {
+
+  tags    = {}
+  domain  = "noad.cz"
+  region  = "eu-central-1"
+  project = "noad"
+}
+
 terraform {
   backend "s3" {
     region         = "eu-central-1"
-    bucket         = "serverless-example-terraform-up-and-running-state"
+    bucket         = "node-graphql-boilerplate-terraform-up-and-running-state"
     key            = "react-boilerplate"
     encrypt        = true
-    dynamodb_table = "terraform-up-and-running-locks"
+    dynamodb_table = "node-graphql-boilerplate-terraform-up-and-running-locks"
     acl            = "bucket-owner-full-control"
   }
 
@@ -22,11 +32,24 @@ provider "aws" {
   alias   = "us_east_1"
 }
 
-locals {
-  tags = merge(var.tags, {
-    project = var.project
-    env     = var.env
-  })
+module "static_site_app__production" {
+  source = "./modules/static_site_app"
 
-  base_origin_id = "Origin${aws_s3_bucket.this.bucket}"
+  environment          = "production"
+  subdomain_dot_prefix = ""
+
+  region  = local.region
+  domain  = local.domain
+  project = local.project
+}
+
+module "static_site_app__stage-1" {
+  source = "./modules/static_site_app"
+
+  environment          = "stage1"
+  subdomain_dot_prefix = "stage-1."
+
+  region  = local.region
+  domain  = local.domain
+  project = local.project
 }

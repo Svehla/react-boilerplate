@@ -1,7 +1,7 @@
 data "aws_canonical_user_id" "current_user" {}
 
 resource "aws_s3_bucket" "this" {
-  bucket = "${var.project}-s3-web-${var.env}"
+  bucket = "${var.project}-public-${var.subdomain_dot_prefix}${var.domain}"
 
   # TODO: add owner access into s3 bucket
 
@@ -30,7 +30,7 @@ resource "aws_s3_bucket" "this" {
 
 
   cors_rule {
-    allowed_origins = ["https://${var.domain}"]
+    allowed_origins = ["https://www.${var.subdomain_dot_prefix}${var.domain}", "https://${var.subdomain_dot_prefix}${var.domain}"]
     allowed_methods = ["GET"]
     max_age_seconds = 3000
   }
@@ -38,7 +38,7 @@ resource "aws_s3_bucket" "this" {
 
   tags = merge(local.tags,
     {
-      Name = "${var.project}-${var.env}"
+      Name = "${var.project}-${var.environment}"
     }
   )
 }

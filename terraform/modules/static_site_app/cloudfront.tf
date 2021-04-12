@@ -9,11 +9,11 @@ resource "aws_cloudfront_distribution" "this" {
   default_root_object = "index.html"
 
 
-  aliases     = ["www.${var.domain}", var.domain]
+  aliases     = ["www.${var.subdomain_dot_prefix}${var.domain}", "${var.subdomain_dot_prefix}${var.domain}"]
   price_class = "PriceClass_100"
   tags = merge(
     local.tags,
-    { Name = "${var.project}-${var.env}" }
+    { Name = "${var.project}-${var.environment}" }
   )
 
   restrictions {

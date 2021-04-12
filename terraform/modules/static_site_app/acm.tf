@@ -1,7 +1,7 @@
 resource "aws_acm_certificate" "cloudfront" {
   provider                  = aws.us_east_1
-  domain_name               = var.domain
-  subject_alternative_names = ["www.${var.domain}"]
+  domain_name               = "${var.subdomain_dot_prefix}${var.domain}"
+  subject_alternative_names = ["www.${var.subdomain_dot_prefix}${var.domain}"]
   validation_method         = "DNS"
 
   tags = merge(local.tags, {
