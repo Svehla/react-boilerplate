@@ -9,7 +9,7 @@ export const appEnvs = validateConfig({
   NODE_ENV: getStringEnumFromEnvParser('NODE_ENV', ['test', 'production', 'development'] as const),
   ENVIRONMENT: getStringEnumFromEnvParser('REACT_APP_ENVIRONMENT', [
     'production',
-    'stage',
+    'stage-1',
   ] as const),
   APP_VERSION: getStringFromEnvParser('REACT_APP_VERSION'),
 })

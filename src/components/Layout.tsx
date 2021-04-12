@@ -1,7 +1,4 @@
-import { AppDeveloperBar } from './AppDeveloperBar'
-import { AppHeader } from './AppHeader'
 import { Container } from '@material-ui/core'
-import { appEnvs } from '../appConfig'
 
 type Props = {
   children: any
@@ -10,13 +7,8 @@ type Props = {
 export const Layout = (props: Props) => {
   return (
     <div>
-      <AppHeader />
       <Container>
-        <div>
-          {props.children}
-
-          {appEnvs.ENVIRONMENT !== 'production' && <AppDeveloperBar />}
-        </div>
+        <div>{props.children}</div>
       </Container>
     </div>
   )
